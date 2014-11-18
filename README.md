@@ -25,7 +25,39 @@ Build steps
 
 under consruction
 
-Install optware bootstrap
+1. Install optware bootstrap
 ------------
 Follow this link and install optware to your device.
 https://github.com/trepmag/ds213j-optware-bootstrap
+
+2. Install mkvmerge via ipkg
+-------------
+ipkg install mkvtoolnix
+
+3. Install armv7 mplayer binaries 
+-------------
+coming soon
+
+4. Create conversion script for dsdownload (optional)
+-------------
+
+5. Setup scheduled task to run conversion script (optional)
+-------------
+
+6. Create conversion script for command line (optional)
+-------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
