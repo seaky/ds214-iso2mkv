@@ -42,6 +42,60 @@ coming soon
 
 4. Create conversion script for dsdownload (optional)
 -------------
+Create the /root/mkvconverter.sh file (chmod 755) and insert: 
+<pre>
+#!/bin/sh
+
+makemkv(){
+  trap "" HUP
+  echo makingmkv $2
+  ISONAME=$(basename $2 .iso)
+
+  /root/mplayer -alang en -dumpaudio -dumpfile $1/dvdrip.a.en -dvd-device $$
+  /root/mplayer -alang hu -dumpaudio -dumpfile $1/dvdrip.a.hu -dvd-device $$
+  /root/mplayer -dumpvideo -dumpfile $1/dvdrip.v -dvd-device $1/$2 dvd://0
+  /opt/bin/mkvmerge -o $1/$ISONAME-tv.mkv.tmp $1/dvdrip.v --language 0:hu $1/dvdrip.$
+  mv $1/$ISONAME-tv.mkv.tmp $1/$ISONAME-tv.mkv
+  rm $1/dvdrip.v $1/dvdrip.a.en $1/dvdrip.a.hu
+  synoindex -R $1
+}
+
+for i in $(/usr/syno/pgsql/bin/psql -t -A -U admin -d download -c \
+'SELECT DISTINCT Download_queue.destination, Download_queue.filename
+FROM Download_queue
+WHERE
+(((Download_queue.status)='5' or (Download_queue.status)='8'));' |sed 's/|/\//g');
+do
+  TPATH=/volume1/$i
+  TISO=$(find $TPATH -iname *.iso)
+  TISONAME=$(echo $TISO | awk '{gsub(/\/.*\//,"",$1); print}')
+
+  if [ -n "$TISO" ]
+  then
+   mkvmaking=$TPATH/mkvmaking
+   mkvdone=$TPATH/mkvdone
+
+   if [ -f $mkvmaking ]
+   then
+      echo inprogress $i
+      break
+   else
+      if [ -f $mkvdone ]
+      then
+        echo skip $i
+        continue
+      else
+        echo startmkv $i
+        touch $mkvmaking
+        makemkv $TPATH $TISONAME
+        mv $mkvmaking $mkvdone
+        break
+      fi
+   fi
+  fi
+
+done
+</pre>
 
 5. Setup scheduled task to run conversion script (optional)
 -------------
