@@ -1,4 +1,8 @@
-ds214-iso2mkv
+ds214-iso2mkv (manual)
 =============
 
-iso2mkv converter for ds214
+Create iso2mkv converter for your Synology ds214/ds213j
+
+Introduction
+------------
+
