@@ -99,10 +99,11 @@ done
 
 5. Setup scheduled task to run conversion script (optional)
 -------------
+coming soon
 
 6. Create conversion script for command line (optional)
 -------------
-
+coming soon
 
 
 
