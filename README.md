@@ -42,7 +42,8 @@ coming soon
 
 4. Create conversion script for dsdownload (optional)
 -------------
-This script extracts english and hungarian audio dub if you want to modify this change mplayer -alang <langcode> lines and mkvmerge --language line.
+This script extracts english and hungarian audio dub if you want to modify this change:
+<pre>mplayer -alang <langcode> lines and mkvmerge --language</pre> line.
 
 Create the /root/mkvconverter.sh file (chmod 755) and insert: 
 <pre>
