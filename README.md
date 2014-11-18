@@ -34,7 +34,7 @@ https://github.com/trepmag/ds213j-optware-bootstrap
 -------------
 <pre>
 $ ipkg install mkvtoolnix
-<\pre>
+</pre>
 
 3. Install armv7 mplayer binaries 
 -------------
