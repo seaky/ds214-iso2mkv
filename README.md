@@ -32,7 +32,9 @@ https://github.com/trepmag/ds213j-optware-bootstrap
 
 2. Install mkvmerge via ipkg
 -------------
-ipkg install mkvtoolnix
+<pre>
+$ ipkg install mkvtoolnix
+<\pre>
 
 3. Install armv7 mplayer binaries 
 -------------
@@ -46,7 +48,6 @@ coming soon
 
 6. Create conversion script for command line (optional)
 -------------
-
 
 
 
