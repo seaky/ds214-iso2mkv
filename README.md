@@ -24,3 +24,8 @@ Build steps
 6. Create conversion script for command line (optional)
 
 under consruction
+
+Install optware bootstrap
+------------
+Follow this link and install optware to your device.
+https://github.com/trepmag/ds213j-optware-bootstrap
