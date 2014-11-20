@@ -43,7 +43,10 @@ $ mkdir /root/iso2mkv
 
 4. Create conversion script for dsdownload (optional)
 -------------
-This script extracts english and hungarian audio dub if you want to modify this change:
+This script convert downloaded iso files to mkv. Extract audio dubs and video stream via mplayer and make mkv by mkvmerge tool.
+
+####Note
+Extracts english and hungarian audio dub if you want to modify, change mplayer and mkvmerge lines.
 <pre>mplayer -alang [langcode] lines and mkvmerge --language line.</pre>
 
 Create the /root/iso2mkv/mkvconverter.sh file (chmod 755) and insert: 
