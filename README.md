@@ -23,8 +23,6 @@ Build steps
 5. Setup scheduled task to run conversion script (optional)
 6. Create conversion script for command line (optional)
 
-under consruction
-
 1. Install optware bootstrap
 ------------
 Follow this link and install optware to your device.
