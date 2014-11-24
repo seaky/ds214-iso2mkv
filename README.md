@@ -38,14 +38,14 @@ $ ipkg install mkvtoolnix
 
 3. Install armv7 mplayer binaries 
 -------------
-coming soon
+Copy the provided file to /root/iso2mkv (chmod 755)
 
 4. Create conversion script for dsdownload (optional)
 -------------
-This script extracts english and hungarian audio dub if you want to modify this change:
+This script extracts english and hungarian audio dub if you want to change:
 <pre>mplayer -alang [langcode] lines and mkvmerge --language line.</pre>
 
-Create the /root/mkvconverter.sh file (chmod 755) and insert: 
+Create the /root/iso2mkv/mkvconverter.sh file (chmod 755) and insert: 
 <pre>
 #!/bin/sh
 
@@ -113,13 +113,29 @@ done
 
 5. Setup scheduled task to run conversion script (optional)
 -------------
-coming soon
+Create support script file /root/iso2mkv/startmkvconvert.sh (chmod 755)
+insert following line(s):
+<pre>
+/root/iso2mkv/mkvconverter >/root/iso2mkv/mkvconverter.out
+</pre>
+
+###Start DSM User Interface
+1. Control Panel -> Task Scheduler
+2. Create user definied script
+3. General settings -> 
+		Task name: MKVConverter
+		User: root
+		User-definied script: /root/iso2mkv/startmkvconvert.sh
+4. Scedule ->
+		Date run: daily
+		Time first run time: 00:00
+		Frequency: Every 1 hours
+		Last run time: 23:59
 
 6. Create conversion script for command line (optional)
 -------------
 coming soon
 
-test
 
 
 
