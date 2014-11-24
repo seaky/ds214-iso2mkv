@@ -38,7 +38,7 @@ $ ipkg install mkvtoolnix
 
 3. Install armv7 mplayer binaries 
 -------------
-Copy the provided file to /root/iso2mkv (chmod 755)
+Copy the provided mplayer file to /root/iso2mkv (chmod 755)
 
 4. Create conversion script for dsdownload (optional)
 -------------
@@ -54,7 +54,7 @@ Create the /root/iso2mkv/mkvconverter.sh file (chmod 755) and insert:
 
 BASEPATH=/volume1
 POSTFIX=-tv
-MPLAYER=/root/3rdparty/mplayer
+MPLAYER=/root/iso2mkv/mplayer
 MKVMERGE=/opt/bin/mkvmerge
 
 makemkv() {
