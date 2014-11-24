@@ -49,54 +49,65 @@ Create the /root/mkvconverter.sh file (chmod 755) and insert:
 <pre>
 #!/bin/sh
 
-makemkv(){
-  trap "" HUP
-  echo makingmkv $2
-  ISONAME=$(basename $2 .iso)
+# ISO2MKV Converter v1.0
+# written by Robert Szakalli
 
-  /root/mplayer -alang en -dumpaudio -dumpfile $1/dvdrip.a.en -dvd-device $$
-  /root/mplayer -alang hu -dumpaudio -dumpfile $1/dvdrip.a.hu -dvd-device $$
-  /root/mplayer -dumpvideo -dumpfile $1/dvdrip.v -dvd-device $1/$2 dvd://0
-  /opt/bin/mkvmerge -o $1/$ISONAME-tv.mkv.tmp $1/dvdrip.v --language 0:hu $1/dvdrip.$
-  mv $1/$ISONAME-tv.mkv.tmp $1/$ISONAME-tv.mkv
-  rm $1/dvdrip.v $1/dvdrip.a.en $1/dvdrip.a.hu
-  synoindex -R $1
+BASEPATH=/volume1
+POSTFIX=-tv
+MPLAYER=/root/3rdparty/mplayer
+MKVMERGE=/opt/bin/mkvmerge
+
+makemkv() {
+  STARTTIME=$(date +%s)
+  trap "" HUP
+  ISONAME=$(basename $1 .iso)
+  ISODIR=$(dirname $1)
+  echo "making: $ISONAME"
+
+  $MPLAYER -alang en -dumpaudio -dumpfile $ISODIR/dvdrip.a.en -dvd-device $1 dvd://0
+  $MPLAYER -alang hu -dumpaudio -dumpfile $ISODIR/dvdrip.a.hu -dvd-device $1 dvd://0
+  $MPLAYER -dumpvideo -dumpfile $ISODIR/dvdrip.v -dvd-device $1 dvd://0
+  $MKVMERGE -o $ISODIR/$ISONAME$POSTFIX.mkv.tmp $ISODIR/dvdrip.v --language 0:hu $ISODIR/dvdrip.a.hu --language 0:en $ISODIR/dvdrip.a.en
+  mv $ISODIR/$ISONAME$POSTFIX.mkv.tmp $ISODIR/$ISONAME$POSTFIX.mkv
+  rm $ISODIR/dvdrip.v $ISODIR/dvdrip.a.en $ISODIR/dvdrip.a.hu 
+  synoindex -R $ISODIR
+  ENDTIME=$(date +%s)
+  echo "conversion took: $(($ENDTIME - $STARTTIME)) seconds"
 }
 
 for i in $(/usr/syno/pgsql/bin/psql -t -A -U admin -d download -c \
-'SELECT DISTINCT Download_queue.destination, Download_queue.filename
-FROM Download_queue
-WHERE
-(((Download_queue.status)='5' or (Download_queue.status)='8'));' |sed 's/|/\//g');
-do
-  TPATH=/volume1/$i
-  TISO=$(find $TPATH -iname *.iso)
-  TISONAME=$(echo $TISO | awk '{gsub(/\/.*\//,"",$1); print}')
+'SELECT DISTINCT Download_queue.destination, Download_queue.filename 
+FROM Download_queue 
+WHERE 
+(((Download_queue.status)='5' or (Download_queue.status)='8'));' |sed 's/|/\//g'); 
+do 
+  CPATH=$BASEPATH/$i
+  CISO=$(find $CPATH -iname *.iso)
 
-  if [ -n "$TISO" ]
+  if [ -n "$CISO" ]
   then
-   mkvmaking=$TPATH/mkvmaking
-   mkvdone=$TPATH/mkvdone
+   mkvmaking=$CPATH/mkvmaking
+   mkvdone=$CPATH/mkvdone
 
    if [ -f $mkvmaking ]
    then
-      echo inprogress $i
+      echo "inprogress: $i"
       break
    else
       if [ -f $mkvdone ]
       then
-        echo skip $i
+        echo "already done: $i"
         continue
       else
-        echo startmkv $i
+        echo "starting: $i"
         touch $mkvmaking
-        makemkv $TPATH $TISONAME
+        makemkv $CISO
         mv $mkvmaking $mkvdone
         break
       fi
    fi
   fi
-
+   
 done
 </pre>
 
